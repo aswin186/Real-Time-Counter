@@ -8,21 +8,33 @@
 <body>
     <h1>Counter: <span id="counter">{{ count.value }}</span></h1>
     <button onclick="incrementCounter()">Increment Counter</button>
+    <br>
+    <button onclick="decrementCounter()">Decrement Counter</button>
 
     <script>
         
         const counterElement = document.getElementById('counter');
         
+        {# Connecting to WebSocket #}
         const socket = new WebSocket('ws://localhost:8000/ws/counter/');
 
+        {# While any updates in value of count then it will check for the event message and update the count value in HTML #}
         socket.onmessage = function(event) {
             const data = JSON.parse(event.data);
             console.log('Received data:', data);
             counterElement.textContent = data.value;
         };
-
+        
+        {# Function will call when we press the increment button and go to the increment_counter function in views.py #}
         function incrementCounter() {
             fetch('/increment/')
+                .then(response => response.json())
+                .then(data => console.log(data));
+        }
+        
+        {# Function will call when we press the decrement button and go to the decrement_counter function in views.py #}
+        function decrementCounter() {
+            fetch('/decrement/')
                 .then(response => response.json())
                 .then(data => console.log(data));
         }

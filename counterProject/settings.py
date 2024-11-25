@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'daphne',
+    'daphne',   # Django needs Daphne or other ASGI Server for WebSockets
     'channels',
     'counter',
     'django.contrib.admin',
@@ -71,15 +71,23 @@ TEMPLATES = [
     },
 ]
 
+# Configure the ASIG app and make changes to the asig.py file with WebSocket Protocol
 ASGI_APPLICATION = 'counterProject.asgi.application'
 
-# Redis configuration
+# Redis channel layer
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [('127.0.0.1', 6379)],
+#         },
+#     },
+# }
+
+# Configure the channel layer
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [('127.0.0.1', 6379)],
-        },
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
     },
 }
 

@@ -6,3 +6,7 @@ class Counter(models.Model):
     def increment(self):
         self.value += 1
         self.save()
+
+    def decrement(self):
+        self.value -= 1
+        self.save()
