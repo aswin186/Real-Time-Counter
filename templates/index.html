@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Counter</title>
+</head>
+<body>
+    <h1>Counter: <span id="counter">{{ count.value }}</span></h1>
+    <button onclick="incrementCounter()">Increment Counter</button>
+
+    <script>
+        
+        const counterElement = document.getElementById('counter');
+        
+        const socket = new WebSocket('ws://localhost:8000/ws/counter/');
+
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            console.log('Received data:', data);
+            counterElement.textContent = data.value;
+        };
+
+        function incrementCounter() {
+            fetch('/increment/')
+                .then(response => response.json())
+                .then(data => console.log(data));
+        }
+        
+    </script>
+</body>
+</html>
